@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LoopLens // agent guardrails</title>
+  <meta name="description" content="Loop detection, spend caps and result caching for AI agent tool calls." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+
+    <nav class="nav">
+      <div class="brand">
+        <span class="mark" aria-hidden="true"></span>
+        <span class="brand-name">LoopLens</span>
+        <span class="version">v1.0</span>
+      </div>
+      <div class="nav-right">
+        <span id="session-label" class="session-label">NO SESSION</span>
+        <span id="connection" class="pill pill-muted">CONNECTING</span>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <p class="eyebrow">Agent guardrails</p>
+      <h1>Stop runaway agents.<br /><em>Cap</em> what they spend.</h1>
+      <p class="lede">
+        LoopLens sits between your agent and its tools. It blocks repeated calls,
+        enforces a spend limit per session, and reuses results it has already paid for.
+        Every block comes with a plain-English reason.
+      </p>
+      <div class="actions">
+        <button id="simulate-btn" class="btn btn-primary" type="button">Run simulation</button>
+        <button id="reset-btn" class="btn btn-ghost" type="button">Reset</button>
+      </div>
+    </header>
+
+    <section class="metrics" aria-label="Session metrics">
+      <div class="metric">
+        <div class="metric-label"><span>Tool calls</span><span class="pill-spacer" aria-hidden="true"></span></div>
+        <div id="call-count" class="metric-value">0</div>
+        <div class="meter" aria-hidden="true"></div>
+        <div class="metric-sub">Checked before each run</div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-label"><span>Tokens</span><span class="pill-spacer" aria-hidden="true"></span></div>
+        <div id="stat-tokens" class="metric-value">0</div>
+        <div class="meter" aria-hidden="true"></div>
+        <div class="metric-sub">Reported per agent step</div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-label">
+          <span>Spend</span>
+          <span id="session-status" class="pill pill-ok">IDLE</span>
+        </div>
+        <div id="stat-cost" class="metric-value">$0.0000</div>
+        <div class="meter" aria-hidden="true"><div id="cost-bar" class="meter-fill"></div></div>
+        <div id="cost-sub" class="metric-sub">Budget not set</div>
+      </div>
+
+      <div class="metric metric-danger">
+        <div class="metric-label"><span>Blocked</span><span class="pill-spacer" aria-hidden="true"></span></div>
+        <div id="stat-blocked" class="metric-value">0</div>
+        <div class="meter" aria-hidden="true"></div>
+        <div class="metric-sub">Loops and budget stops</div>
+      </div>
+    </section>
+
+    <main class="layout">
+      <section class="panel">
+        <header class="panel-head">
+          <h2 class="panel-title"><span class="idx">01</span> Agent activity</h2>
+          <span class="panel-sub">LIVE · 2s</span>
+        </header>
+        <ul id="activity" class="activity" aria-live="polite"></ul>
+      </section>
+
+      <section class="panel">
+        <header class="panel-head">
+          <h2 class="panel-title"><span class="idx">02</span> Token burn</h2>
+          <span class="panel-sub">CUMULATIVE</span>
+        </header>
+        <div class="chart-box"><canvas id="token-chart"></canvas></div>
+
+        <header class="panel-head panel-head-sub">
+          <h2 class="panel-title"><span class="idx">03</span> Alerts</h2>
+        </header>
+        <div id="alerts" class="alerts" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>LOOPLENS // OPEN SOURCE</span>
+      <span>#BUILDINPUBLIC · WEEK 04</span>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+</body>
+</html>
