@@ -61,6 +61,10 @@ Every call is recorded with its token count and status, whatever the outcome.
 
 ---
 
+## Demo 
+
+> 📸 ![Sample output](demo.png)
+
 ## Quick start
 
 ### Prerequisites
